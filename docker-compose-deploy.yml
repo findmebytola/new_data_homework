@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  django_gunicorn:
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    environment:
+      - SECRET_KEY=django-insecure-=_b=n=+nivfsv7dy38_*s6l7=j*nye^h#wz=acj&504q+#xszd
+      - ALLOWED_HOSTS=127.0.0.1,localhost
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "82:82"
+    depends_on:
+      - django_gunicorn
+
+volumes:
+  static_data:
